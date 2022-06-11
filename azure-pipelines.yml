@@ -1,0 +1,56 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'a0f8ed65-468f-48da-a26c-b4e40d344a2f'
+  imageRepository: 'sengteamvegaspring'
+  containerRegistry: 'vegaspringteam4.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+    - task: DockerCompose@0
+      inputs:
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscription: 'Azure for Students(eddad6ab-c78b-4843-ab26-400912a94327)'
+        azureContainerRegistry: '{"loginServer":"vegaspringteam4.azurecr.io", "id" : "/subscriptions/eddad6ab-c78b-4843-ab26-400912a94327/resourceGroups/SENG426/providers/Microsoft.ContainerRegistry/registries/vegaspringteam4"}'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Build services'
+    - task: DockerCompose@0
+      inputs:
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscription: 'Azure for Students(eddad6ab-c78b-4843-ab26-400912a94327)'
+        azureContainerRegistry: '{"loginServer":"vegaspringteam4.azurecr.io", "id" : "/subscriptions/eddad6ab-c78b-4843-ab26-400912a94327/resourceGroups/SENG426/providers/Microsoft.ContainerRegistry/registries/vegaspringteam4"}'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Push services'
+    - task: CmdLine@2
+      inputs:
+        script: './mvnw test'
