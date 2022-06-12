@@ -1,7 +1,7 @@
 FROM openjdk:14.0.2 as build
 WORKDIR /workspace/app
 
-COPY mvnw.cmd .
+COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
