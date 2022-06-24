@@ -8,7 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SecretInfoDAO extends JpaRepository <SecretInfo, String>  {
+public interface SecretInfoDAO extends JpaRepository <SecretInfo, Long>  {
 
+    List<SecretInfo> findSecretInfoByUsername (String username);
+
+    
     Optional<SecretInfo> findSecretInfoByName (String name);
 }
