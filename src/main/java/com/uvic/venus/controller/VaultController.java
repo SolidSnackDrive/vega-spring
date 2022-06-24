@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class VaultController {
     }
 
 
-    @GetMapping
+    @GetMapping (path = "admin")
     public List <SecretInfo> getSecrets() {
 
         List<SecretInfo> secrets  = secretInfoDAO.findAll();
@@ -37,8 +38,16 @@ public class VaultController {
         return secrets;
     }
 
-    // @PostMapping
-    @RequestMapping(value="/add", method = RequestMethod.POST)
+    @GetMapping (path = "{username}")
+    public List <SecretInfo> getUsernameSecrets(@PathVariable("username") String username ) {
+
+        List<SecretInfo> secrets  = secretInfoDAO.findSecretInfoByUsername(username);
+
+        return secrets;
+    }
+
+    @PostMapping (path = "{username}/add")
+    // @RequestMapping(value="/add", method = RequestMethod.POST)
     public void addNewSecret(@RequestBody SecretInfo secretInfo) {
         //Optional<SecretInfo> secretOptional =  secretInfoDAO.findSecretInfoByName(secretInfo.getName());
         // SecretInfo secretInfo1 = new SecretInfo("Test1", null,  "secretsss");
