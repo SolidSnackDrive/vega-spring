@@ -32,14 +32,6 @@ public class VaultController {
         this.secretInfoDAO = secretInfoDAO;
     }
 
-    @GetMapping (path = "admin")
-    public ResponseEntity <?> getSecrets() {
-
-        List<SecretInfo> secrets  = secretInfoDAO.findAll();
-        return ResponseEntity.ok(secrets);
-
-    }
-
     @GetMapping (path = "{username}")
     public ResponseEntity <?> getUsernameSecrets(@PathVariable("username") String username ) {
 
