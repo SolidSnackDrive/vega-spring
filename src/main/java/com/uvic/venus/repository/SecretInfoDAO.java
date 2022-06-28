@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SecretInfoDAO extends JpaRepository <SecretInfo, Long>  {
 
-    List<SecretInfo> findSecretInfoByUsername (String username);
+    List<SecretInfo> findSecretInfoByUsernameOrderByTimeCreatedDesc (String username);
     SecretInfo findSecretInfoByUsernameAndName (String username, String name);
     boolean existsByUsernameAndName (String username, String name);
     void deleteByName(String name);

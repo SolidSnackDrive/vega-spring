@@ -43,7 +43,7 @@ public class VaultController {
     @GetMapping (path = "{username}")
     public ResponseEntity <?> getUsernameSecrets(@PathVariable("username") String username ) {
 
-        List<SecretInfo> secrets  = secretInfoDAO.findSecretInfoByUsername(username);
+        List<SecretInfo> secrets  = secretInfoDAO.findSecretInfoByUsernameOrderByTimeCreatedDesc(username);
         return ResponseEntity.ok(secrets);
     }
 
