@@ -42,7 +42,6 @@ public class VaultController {
 
     {
         List<SecretInfo> secrets  = secretInfoDAO.findSecretInfoByUsername(username, Sort.by("timeCreated").descending());
-        System.out.println("FROM DATE: " + fromDate);
 
         if (fromDate != null && toDate != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
