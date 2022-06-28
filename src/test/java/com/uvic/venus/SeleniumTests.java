@@ -168,7 +168,7 @@ public class SeleniumTests{
     public void testApproval() {
         // Find login button
         WebElement login = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-        assertEquals("Login/SignUp", login.getText(), "Button not found");
+        assertEquals("Login", login.getText(), "Button not found");
 
         login.click();
 
@@ -181,5 +181,34 @@ public class SeleniumTests{
         assertEquals("Admin", admin.getText(), "Button not found");
 
         admin.click();
+
+        WebElement table = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[2]/table/tbody"));
+        WebElement enable = driver.findElement(By.xpath("//td[text()='Sel']/following-sibling::td[3]/a"));
+
+        assertEquals("Enable User", enable.getText());
+
+        enable.click();
+
+        WebElement logout = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div[1]/a"));
+        assertEquals("Logout", logout.getText());
+
+        logout.click();
+
+        WebElement logout_button = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[2]/div/div/button"));
+        assertEquals("signout", logout_button.getText());
+
+        logout_button.click();
+
+        login = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
+        assertEquals("Login", login.getText(), "Button not found");
+        login.click();
+
+        // Login using USER credentials
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/form/div[1]/input")).sendKeys("selenium@test.com");
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/form/div[2]/input")).sendKeys("pass" + Keys.ENTER);
+
+        // Check if buttons exits
+        logout = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
+        assertEquals("Logout", logout.getText(), "Button not found");
     }
 }
