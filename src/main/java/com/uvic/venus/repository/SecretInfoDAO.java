@@ -1,16 +1,16 @@
 package com.uvic.venus.repository;
 
 import com.uvic.venus.model.SecretInfo;
+import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SecretInfoDAO extends JpaRepository <SecretInfo, Long>  {
 
-    List<SecretInfo> findSecretInfoByUsernameOrderByTimeCreatedDesc (String username);
+    List<SecretInfo> findSecretInfoByUsername(String username, org.springframework.data.domain.Sort sort);
+    List<SecretInfo> findSecretInfoByTimeCreatedBetweenAndUsername(Timestamp fromDate, Timestamp toDate, String username, org.springframework.data.domain.Sort sort);
     SecretInfo findSecretInfoByUsernameAndName (String username, String name);
     boolean existsByUsernameAndName (String username, String name);
     void deleteByName(String name);

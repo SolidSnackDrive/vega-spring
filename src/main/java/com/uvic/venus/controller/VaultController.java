@@ -1,10 +1,14 @@
 package com.uvic.venus.controller;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,22 +35,27 @@ public class VaultController {
     public VaultController(SecretInfoDAO secretInfoDAO) {
         this.secretInfoDAO = secretInfoDAO;
     }
+    @GetMapping ({"{username}", "{username}/from={fromDate}&to={toDate}"})
+    public ResponseEntity <?> getUsernameSecrets(@PathVariable("username") String username, 
+                                                 @PathVariable(name = "fromDate", required = false) String fromDate, 
+                                                 @PathVariable(name = "toDate", required = false) String toDate) throws ParseException 
 
-    @GetMapping (path = "admin")
-    public ResponseEntity <?> getSecrets() {
+    {
+        List<SecretInfo> secrets  = secretInfoDAO.findSecretInfoByUsername(username, Sort.by("timeCreated").descending());
 
-        List<SecretInfo> secrets  = secretInfoDAO.findAll();
+        if (fromDate != null && toDate != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Timestamp fromTimestamp = new Timestamp ((dateFormat.parse(fromDate)).getTime());
+            Timestamp toTimestamp = new Timestamp ((dateFormat.parse(toDate)).getTime());
+
+            secrets  = secretInfoDAO
+            .findSecretInfoByTimeCreatedBetweenAndUsername(fromTimestamp,toTimestamp,username, Sort.by("timeCreated").descending());
+        }
+
         return ResponseEntity.ok(secrets);
-
     }
 
-    @GetMapping (path = "{username}")
-    public ResponseEntity <?> getUsernameSecrets(@PathVariable("username") String username ) {
-
-        List<SecretInfo> secrets  = secretInfoDAO.findSecretInfoByUsernameOrderByTimeCreatedDesc(username);
-        return ResponseEntity.ok(secrets);
-    }
-
+ 
     @PostMapping (path = "{username}/add")
 
     public void addNewSecret(@PathVariable("username") String username, @RequestBody SecretInfo secretInfo) {
