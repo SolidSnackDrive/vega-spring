@@ -60,11 +60,12 @@ public class VaultController {
 
     public void addNewSecret(@PathVariable("username") String username, @RequestBody SecretInfo secretInfo) {
 		
-        SecretInfo secret  = secretInfoDAO.findSecretInfoByUsernameAndName(username, secretInfo.getName());
+        if (secretInfo.getName() == null) {
+            throw new IllegalArgumentException("Secret Name Must Be Non Null"); 
+        }
 
-        if (secretInfo.getName() == null  || secret != null && secretInfo.getName().equals(secret.getName())) {
-            throw new IllegalArgumentException("Secret Name Must Be Not null and unique"); 
-
+        if (secretInfo.getData() == null) {
+            throw new IllegalArgumentException("Secret Data Must Be Non Null"); 
         }
         secretInfoDAO.save(secretInfo);   
     }
@@ -73,13 +74,13 @@ public class VaultController {
     @DeleteMapping(path = "{username}/delete")
     public void deleteSecret(@PathVariable("username") String username, @RequestBody SecretInfo secret) {
 
-        boolean exists = secretInfoDAO.existsByUsernameAndName(username, secret.getName());
+        boolean exists = secretInfoDAO.existsByUsernameAndId(username, secret.getId());
 
         if (!exists) {
-            throw new IllegalStateException("secret with name " + secret.getName() + " doesn't exist");
+            throw new IllegalStateException("secret with id " + secret.getId() + " doesn't exist for user " + username);
         }
 
-        secretInfoDAO.deleteByName(secret.getName());
+        secretInfoDAO.deleteById(secret.getId());
     }
 
     @Transactional
@@ -88,23 +89,23 @@ public class VaultController {
                         @PathVariable("username") String username,
                         @RequestBody SecretInfoUpdateRequest secretInfoUpdate) 
     {
-        String name = secretInfoUpdate.getName();
+        Long id = secretInfoUpdate.getId();
         String newName = secretInfoUpdate.getNewName();
         String newData  = secretInfoUpdate.getNewData();
 
-        SecretInfo secret = secretInfoDAO.findSecretInfoByUsernameAndName(username, name);
+        SecretInfo secret = secretInfoDAO.findSecretInfoByUsernameAndId(username, id);
 
         if (secret == null) {
 
-            throw new IllegalStateException("secret with name " + name + " doesn't exist");
+            throw new IllegalStateException("secret with id " + id + " doesn't exist");
         }
 
 
-        if (newName != null && !secret.getName().equals(newName)) {
+        if (newName != null) {
             secret.setName(newName);
         }
 
-        if (newData != null && !secret.getData().equals(newData)) {
+        if (newData != null) {
             secret.setData(newData);
         }
   

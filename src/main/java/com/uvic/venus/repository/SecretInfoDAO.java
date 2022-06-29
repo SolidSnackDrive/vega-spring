@@ -11,7 +11,7 @@ public interface SecretInfoDAO extends JpaRepository <SecretInfo, Long>  {
 
     List<SecretInfo> findSecretInfoByUsername(String username, org.springframework.data.domain.Sort sort);
     List<SecretInfo> findSecretInfoByTimeCreatedBetweenAndUsername(Timestamp fromDate, Timestamp toDate, String username, org.springframework.data.domain.Sort sort);
-    SecretInfo findSecretInfoByUsernameAndName (String username, String name);
-    boolean existsByUsernameAndName (String username, String name);
+    SecretInfo findSecretInfoByUsernameAndId (String username, Long id);
+    boolean existsByUsernameAndId (String username, Long id);
     void deleteByName(String name);
 }

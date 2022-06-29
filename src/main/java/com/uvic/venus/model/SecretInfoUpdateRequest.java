@@ -6,13 +6,27 @@ public class SecretInfoUpdateRequest {
     private String newName;
     private String newData;
     private String username;
+    private Long id;
 
-    public SecretInfoUpdateRequest(String name, String newName, String newData, String username) {
+    public SecretInfoUpdateRequest(String name, String newName, String newData, String username, Long id) {
         this.name = name;
         this.newName = newName;
         this.newData = newData;
         this.username = username;
+        this.id = id;
+
     }
+
+    
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     public String getName() {
         return name;
