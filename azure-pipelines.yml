@@ -39,6 +39,7 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+          latest
     - task: CmdLine@2
       inputs:
         script: './mvnw clean install'
