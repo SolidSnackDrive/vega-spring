@@ -152,7 +152,7 @@ public class SeleniumTests{
     @Test
     public void testRegistration() {
         WebElement signup = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div[2]/a"));
-        assertEquals("Signup", signup.getText(), "Button not fonud");
+        assertEquals("Signup", signup.getText(), "Button not found");
         signup.click();
 
         driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/form/div[1]/input")).sendKeys("selenium@test.com");
@@ -165,7 +165,22 @@ public class SeleniumTests{
     }
 
     @Test
-    public void testApproval() {
+    public void testNoApprovalBadLogin() throws InterruptedException {
+        WebElement login = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
+        assertEquals("Login", login.getText(), "Button not found");
+
+        login.click();
+        // Login using USER credentials
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/form/div[1]/input")).sendKeys("selenium@test.com");
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/form/div[2]/input")).sendKeys("pass" + Keys.ENTER);
+        Thread.sleep(5000);
+        // Check if buttons exits
+        WebElement error = driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/h6"));
+        assertEquals("Error: {}", error.getText(), "Button not found");
+    }
+
+    @Test
+    public void testApprovalGoodLogin() throws InterruptedException {
         // Find login button
         WebElement login = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
         assertEquals("Login", login.getText(), "Button not found");
@@ -181,6 +196,8 @@ public class SeleniumTests{
         assertEquals("Admin", admin.getText(), "Button not found");
 
         admin.click();
+
+        //Thread.sleep(5000);
 
         WebElement table = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[2]/table/tbody"));
         WebElement enable = driver.findElement(By.xpath("//td[text()='Sel']/following-sibling::td[3]/a"));
@@ -207,8 +224,11 @@ public class SeleniumTests{
         driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/form/div[1]/input")).sendKeys("selenium@test.com");
         driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/form/div[2]/input")).sendKeys("pass" + Keys.ENTER);
 
+        //Thread.sleep(5000);
+
         // Check if buttons exits
         logout = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
         assertEquals("Logout", logout.getText(), "Button not found");
     }
+
 }
