@@ -2,14 +2,13 @@ package com.uvic.venus.model;
 
 public class SecretInfoUpdateRequest {
 
-    private String name;
     private String newName;
     private String newData;
     private String username;
     private Long id;
 
-    public SecretInfoUpdateRequest(String name, String newName, String newData, String username, Long id) {
-        this.name = name;
+    public SecretInfoUpdateRequest(String newName, String newData, String username, Long id) {
+  
         this.newName = newName;
         this.newData = newData;
         this.username = username;
@@ -25,15 +24,6 @@ public class SecretInfoUpdateRequest {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getNewName() {
