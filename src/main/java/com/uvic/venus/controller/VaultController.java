@@ -110,5 +110,9 @@ public class VaultController {
         }
   
     }
+
+    public void deleteAll() {
+        secretInfoDAO.deleteAll();
+    }
        
 }
