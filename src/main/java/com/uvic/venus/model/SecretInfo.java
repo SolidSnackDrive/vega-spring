@@ -1,7 +1,6 @@
 package com.uvic.venus.model;
 
 import java.sql.Timestamp;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,18 +26,18 @@ public class SecretInfo {
     )
 
     private Long id;
+    private Long parentId;
     private String username;
+    private String owner;
     private String name;
     private String data;
-    private Timestamp timeCreated;
-   
+    private Timestamp timeCreated;   
 
     public SecretInfo(String username, String name, String data, Timestamp timeCreated) {
         this.username = username;
         this.name = name; 
         this.data = data;
-        this.timeCreated = timeCreated;
-       
+        this.timeCreated = timeCreated;               
     }
 
     public SecretInfo() {
@@ -85,8 +84,31 @@ public class SecretInfo {
 
     @Override
     public String toString() {
-        return "SecretInfo [name=" + name + ", data=" + data + ", timeCreated=" + timeCreated + "]";
-    }   
+        return "SecretInfo [ \r\nid= " + id + "\r\nparent id=" + parentId + "\r\nusername= " + username  + "\r\nname= " + name + "\r\ndata= " + data + "\r\ntimeCreated= " + timeCreated + "\r\n]";
+    }
 
-        
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {        
+        if (!(obj instanceof SecretInfo))
+        return false;
+
+        SecretInfo s = (SecretInfo) obj;
+        return (this.id.equals(s.getId()));
+    }         
 }

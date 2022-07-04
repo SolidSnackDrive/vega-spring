@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,11 +37,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf()
                 .disable()
-                .authorizeRequests().antMatchers("/authenticate", "/register","/demo/**")
+                .authorizeRequests().antMatchers("/authenticate", "/register","/vault/**")
                 .permitAll()
                 .and()
-                .authorizeRequests().antMatchers("/vault/**").hasAnyRole("ADMIN", "STAFF", "USER")
-                .and() 
                 .authorizeRequests().antMatchers("/files/**").hasAnyRole("ADMIN", "STAFF")
                 .and()
                 .authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
@@ -48,6 +47,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception{
+        web.ignoring().antMatchers("/h2-console/**");
     }
 
     @Override

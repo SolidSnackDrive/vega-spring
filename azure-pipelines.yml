@@ -39,20 +39,7 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-    - task: DockerCompose@0
-      inputs:
-        containerregistrytype: 'Azure Container Registry'
-        azureSubscription: 'Azure for Students(eddad6ab-c78b-4843-ab26-400912a94327)'
-        azureContainerRegistry: '{"loginServer":"vegaspringteam4.azurecr.io", "id" : "/subscriptions/eddad6ab-c78b-4843-ab26-400912a94327/resourceGroups/SENG426/providers/Microsoft.ContainerRegistry/registries/vegaspringteam4"}'
-        dockerComposeFile: '**/docker-compose.yml'
-        action: 'Build services'
-    - task: DockerCompose@0
-      inputs:
-        containerregistrytype: 'Azure Container Registry'
-        azureSubscription: 'Azure for Students(eddad6ab-c78b-4843-ab26-400912a94327)'
-        azureContainerRegistry: '{"loginServer":"vegaspringteam4.azurecr.io", "id" : "/subscriptions/eddad6ab-c78b-4843-ab26-400912a94327/resourceGroups/SENG426/providers/Microsoft.ContainerRegistry/registries/vegaspringteam4"}'
-        dockerComposeFile: '**/docker-compose.yml'
-        action: 'Push services'
+          latest
     - task: CmdLine@2
       inputs:
-        script: './mvnw test'
+        script: './mvnw clean install'
