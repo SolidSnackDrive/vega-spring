@@ -41,7 +41,7 @@ public class SeleniumTests{
     public void testAdminLogin(){
         // Find login button
         WebElement login = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-        assertEquals("Login/SignUp", login.getText(), "Button not found");
+        assertEquals("Login", login.getText(), "Button not found");
 
         login.click();
         
@@ -62,7 +62,7 @@ public class SeleniumTests{
     public void testStaffLogin(){
         // Find login button
         WebElement login = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-        assertEquals("Login/SignUp", login.getText(), "Button not found");
+        assertEquals("Login", login.getText(), "Button not found");
 
         login.click();
         
@@ -81,7 +81,7 @@ public class SeleniumTests{
     public void testUserLogin(){
         // Find login button
         WebElement login = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-        assertEquals("Login/SignUp", login.getText(), "Button not found");
+        assertEquals("Login", login.getText(), "Button not found");
 
         login.click();
         
@@ -98,7 +98,7 @@ public class SeleniumTests{
     public void testAdminPanel(){
         // Find login button
         WebElement login = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-        assertEquals("Login/SignUp", login.getText(), "Button not found");
+        assertEquals("Login", login.getText(), "Button not found");
 
         login.click();
         
@@ -123,7 +123,7 @@ public class SeleniumTests{
     public void testChangeUserRole(){
         // Find login button
         WebElement login = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-        assertEquals("Login/SignUp", login.getText(), "Button not found");
+        assertEquals("Login", login.getText(), "Button not found");
 
         login.click();
         
