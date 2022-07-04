@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,6 @@ public class VaultController {
         if (secretInfo.getName() == null) {
             throw new IllegalArgumentException("Secret Name Must Be Non Null"); 
         }
-
         if (secretInfo.getData() == null) {
             throw new IllegalArgumentException("Secret Data Must Be Non Null"); 
         }
@@ -102,7 +100,6 @@ public class VaultController {
         SecretInfo secret = secretInfoDAO.findSecretInfoByUsernameAndId(username, id);
 
         if (secret == null) {
-
             throw new IllegalStateException("secret with id " + id + " doesn't exist");
         }
         if (!username.equals(secret.getOwner())) {
@@ -128,10 +125,7 @@ public class VaultController {
             if (newData != null) {
                 s.setData(newData);
             }
-        }
-
-
-  
+        }  
     }
 
     @Transactional
@@ -142,11 +136,9 @@ public class VaultController {
     {
         Long id = secretInfoShare.getId();
         String sharedUser = secretInfoShare.getShareWithUsername();
-
         SecretInfo secret = secretInfoDAO.findSecretInfoByUsernameAndId(username, id);
 
         if (secret == null) {
-
             throw new IllegalStateException("secret with id " + id + " doesn't exist");
         }
 
@@ -166,8 +158,7 @@ public class VaultController {
         sharedSecret.setOwner(username);
         sharedSecret.setUsername(sharedUser);
 
-        secretInfoDAO.save(sharedSecret);
-  
+        secretInfoDAO.save(sharedSecret);  
     }
 
     @Transactional
@@ -175,13 +166,11 @@ public class VaultController {
     public void transferOwnership(
                         @PathVariable("username") String username,
                         @RequestBody SecretInfo secretInfo) 
-    {
-        
+    {        
         Long id = secretInfo.getId();
         SecretInfo secret = secretInfoDAO.findSecretInfoByUsernameAndId(username, id);
 
         if (secret == null) {
-
             throw new IllegalStateException("secret with id " + id + " doesn't exist");
         }
 
@@ -200,8 +189,7 @@ public class VaultController {
 
         for (SecretInfo s : childSecrets) {
             s.setOwner(secretInfo.getOwner());
-        }
-        
+        }        
     }
 
     // methods below added for using with VaultControllerTests
@@ -211,7 +199,6 @@ public class VaultController {
     }
 
     public List<SecretInfo> findAllByUserName(String username){
-
         return secretInfoDAO.findSecretInfoByUsername(username,Sort.by("timeCreated").descending());
     }
        

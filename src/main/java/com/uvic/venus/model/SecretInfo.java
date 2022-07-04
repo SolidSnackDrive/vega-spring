@@ -31,8 +31,7 @@ public class SecretInfo {
     private String owner;
     private String name;
     private String data;
-    private Timestamp timeCreated;
-   
+    private Timestamp timeCreated;   
 
     public SecretInfo(String username, String name, String data, Timestamp timeCreated) {
         this.username = username;
@@ -105,14 +104,11 @@ public class SecretInfo {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        
+    public boolean equals(Object obj) {        
         if (!(obj instanceof SecretInfo))
         return false;
 
         SecretInfo s = (SecretInfo) obj;
         return (this.id.equals(s.getId()));
-    }
-    
-        
+    }         
 }

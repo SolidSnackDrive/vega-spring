@@ -8,19 +8,15 @@ public class SecretInfoUpdateRequest {
     private Long id;
 
     public SecretInfoUpdateRequest(String newName, String newData, String username, Long id) {
-  
         this.newName = newName;
         this.newData = newData;
         this.username = username;
         this.id = id;
-
     }
-
     
     public Long getId() {
         return id;
     }
-
 
     public void setId(Long id) {
         this.id = id;
@@ -48,10 +44,5 @@ public class SecretInfoUpdateRequest {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-    
-
-    
-
-    
+    }    
 }
