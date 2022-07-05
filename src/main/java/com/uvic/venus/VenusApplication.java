@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 @EnableConfigurationProperties(StorageProperties.class)
 @PropertySource("classpath:application-dev.properties")
+
 public class VenusApplication {
 
 	public static void main(String[] args) {
@@ -28,5 +29,4 @@ public class VenusApplication {
 			storageService.init();
 		};
 	}
-
 }
