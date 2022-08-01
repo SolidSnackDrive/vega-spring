@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uvic.venus.model.SecretInfo;
+import com.uvic.venus.model.SecretInfoRequest;
 import com.uvic.venus.model.SecretInfoShareRequest;
 import com.uvic.venus.model.SecretInfoUpdateRequest;
 import com.uvic.venus.repository.SecretInfoDAO;
@@ -58,7 +59,12 @@ public class VaultController {
  
     @PostMapping (path = "{username}/add")
 
-    public void addNewSecret(@PathVariable("username") String username, @RequestBody SecretInfo secretInfo) {
+    public void addNewSecret(@PathVariable("username") String username, @RequestBody SecretInfoRequest secretInfoRequest) {
+
+        SecretInfo secretInfo = new SecretInfo(secretInfoRequest.getUsername(), 
+                                                secretInfoRequest.getName(), 
+                                                secretInfoRequest.getData(), 
+                                                secretInfoRequest.getTimeCreated());
 	
         if (secretInfo.getName() == null) {
             throw new IllegalArgumentException("Secret Name Must Be Non Null"); 
@@ -72,15 +78,16 @@ public class VaultController {
 
     @Transactional
     @DeleteMapping(path = "{username}/delete")
-    public void deleteSecret(@PathVariable("username") String username, @RequestBody SecretInfo secret) {
+    public void deleteSecret(@PathVariable("username") String username, @RequestBody SecretInfoRequest secretRequest) {
 
-        boolean exists = secretInfoDAO.existsByUsernameAndId(username, secret.getId());
+        SecretInfo secret = secretInfoDAO.findSecretInfoByUsernameAndId(username, secretRequest.getId());
 
-        if (!exists) {
-            throw new IllegalStateException("secret with id " + secret.getId() + " doesn't exist for user " + username);
+        if (secret == null) {
+            throw new IllegalStateException("secret with id " + secretRequest.getId() + " doesn't exist for user " + username);
         }
+
         if (!username.equals(secret.getOwner())) {
-            throw new IllegalArgumentException("username" + username + "does not own secret with id" + secret.getId());
+            throw new IllegalArgumentException("username" + username + "does not own secret with id" + secretRequest.getId());
         }
 
         secretInfoDAO.deleteById(secret.getId());
@@ -165,9 +172,9 @@ public class VaultController {
     @PutMapping(path = "{username}/transfer")
     public void transferOwnership(
                         @PathVariable("username") String username,
-                        @RequestBody SecretInfo secretInfo) 
+                        @RequestBody SecretInfoRequest secretInfoRequest) 
     {        
-        Long id = secretInfo.getId();
+        Long id = secretInfoRequest.getId();
         SecretInfo secret = secretInfoDAO.findSecretInfoByUsernameAndId(username, id);
 
         if (secret == null) {
@@ -178,17 +185,17 @@ public class VaultController {
             throw new IllegalArgumentException("username" + username + "does not own secret with id" + id);
         }
 
-        if (username.equals(secretInfo.getOwner())) {
+        if (username.equals(secretInfoRequest.getOwner())) {
             throw new IllegalArgumentException("username" + username + "can't transfer with itself" + id);
         }
 
-        secret.setOwner(secretInfo.getOwner());
-        secret.setUsername(secretInfo.getOwner());
+        secret.setOwner(secretInfoRequest.getOwner());
+        secret.setUsername(secretInfoRequest.getOwner());
 
         List<SecretInfo> childSecrets = secretInfoDAO.findSecretInfoByParentId(secret.getId());
 
         for (SecretInfo s : childSecrets) {
-            s.setOwner(secretInfo.getOwner());
+            s.setOwner(secretInfoRequest.getOwner());
         }        
     }
 
